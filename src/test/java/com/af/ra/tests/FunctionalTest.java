@@ -95,7 +95,7 @@ public class FunctionalTest {
 
 		// verification for size > 0
 		JsonPath jp = response.jsonPath();
-		System.out.println(jp.toString());
+		System.out.println(jp.getString("$"));
 
 	}
 
