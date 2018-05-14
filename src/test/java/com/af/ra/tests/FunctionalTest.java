@@ -17,6 +17,7 @@ public class FunctionalTest {
 
 	@BeforeClass
 	public static void setup() {
+		
 		String port = System.getProperty("server.port");
 		if (port == null) {
 			RestAssured.port = Integer.valueOf(8080);
@@ -35,16 +36,18 @@ public class FunctionalTest {
 			baseHost = "https://restcountries.eu";
 		}
 		RestAssured.baseURI = baseHost;
+		
 
 	}
 
 	@Test
 	public void searchByRegionTest() {
-		Response response = given().when().get("/region/europe");
+		
+		Response response = given().pathParam("region", "europe").when().get("/region/{region}");
 
 		// verification for 200 response
 		assertEquals(200, response.getStatusCode());
-
+		
 		// verification for size > 0
 		List<String> s = response.jsonPath().get("name");
 		assertTrue(s.size() > 0);
@@ -53,6 +56,7 @@ public class FunctionalTest {
 
 	@Test
 	public void searchByInvalidRegionTest() {
+		
 		Response response = given().pathParam("region", "worngvalue").when().get("/region/{region}");
 
 		// verification for 404 response
@@ -67,7 +71,8 @@ public class FunctionalTest {
 	}
 
 	@Test
-	public void getAll() {
+	public void getAllTest() {
+		
 		Response response = given().when().get("all");
 
 		// verification for 200 response
@@ -81,7 +86,8 @@ public class FunctionalTest {
 
 	//
 	@Test
-	public void getFilterResponse() {
+	public void getFilterResponseTest() {
+		
 		Response response = given().pathParam("name", "united").when().get("name/{name}?fields=name;capital");
 
 		// verification for 200 response
